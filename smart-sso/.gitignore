@@ -1,0 +1,14 @@
+target
+*.class
+.settings
+.classpath
+.project
+
+### FOR IDEA 
+.idea
+*.iml
+out
+gen
+
+catalina.home_IS_UNDEFINED
+*.war

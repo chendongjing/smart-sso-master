@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.smart</groupId>
+		<artifactId>smart-sso</artifactId>
+		<version>2.1.1</version>
+	</parent>
+	<artifactId>smart-sso-server</artifactId>
+	<packaging>war</packaging>
+	<name>${project.artifactId}</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency> 
+        
+        <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+		
+		<!-- sso单点登录客户端 -->
+		<dependency>
+			<groupId>com.smart</groupId>
+			<artifactId>smart-sso-client</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.smart</groupId>
+			<artifactId>smart-sso-client-redis</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	    
+	    <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <!--普通验证码  -->
+		<dependency>
+	      <groupId>com.github.whvcse</groupId>
+	      <artifactId>easy-captcha</artifactId>
+	      <version>1.6.2</version>
+	   </dependency>
+	   
+	   <!-- 数据库连接-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>${mybatisplus.version}</version>
+		</dependency>
+	   
+	   <!-- mybatis -->
+	    <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>${mybatisplus.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>${mybatisplus.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <!-- postgresql数据库依赖 -->
+        <dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
+         <!--mysql依赖-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        
+		<!-- redis支持 -->
+	    <dependency>   
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-data-redis</artifactId>
+	          <exclusions>
+	        <exclusion>
+	            <groupId>io.lettuce</groupId>
+	            <artifactId>lettuce-core</artifactId>
+	        </exclusion>
+	    </exclusions>
+ 
+	    </dependency>
+	    
+	    <dependency>
+	        <groupId>org.springframework.data</groupId>
+	        <artifactId>spring-data-redis</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+	        <groupId>redis.clients</groupId>
+	        <artifactId>jedis</artifactId>
+	    </dependency>
+	    		
+         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        
+        <!-- 阿里云短信接口依赖 -->
+		<dependency>
+		    <groupId>com.aliyun</groupId>
+		    <artifactId>aliyun-java-sdk-core</artifactId>
+		    <version>4.0.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.aliyun</groupId>
+		    <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+		    <version>1.1.0</version>
+		</dependency>
+		 <!--腾讯云短信接口依赖  -->
+		 <dependency>
+		    <groupId>com.tencentcloudapi</groupId>
+		    <artifactId>tencentcloud-sdk-java</artifactId>
+		    <!-- go to https://search.maven.org/search?q=tencentcloud-sdk-java and get the latest version. -->
+		    <version>3.1.75</version>
+		</dependency>
+			
+	</dependencies>
+	
+	<build>
+	    <plugins>
+	      <plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	        </plugin>
+	        <!-- 项目构建输出地址 -->
+	        <plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<copy todir="../deploy" overwrite="true">
+									<fileset dir="${project.build.directory}">
+										<include name="${project.artifactId}.war" />
+									</fileset>
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+	    </plugins>
+	    <resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <filtering>true</filtering>
+	            <excludes>
+	                <exclude>**/*.ttf</exclude>
+	                <exclude>**/*.woff</exclude>
+	            </excludes>
+	        </resource>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <filtering>false</filtering>
+	            <includes>
+	                <include>**/*.ttf</include>
+	                <include>**/*.woff</include>
+	            </includes>
+	        </resource>
+	    </resources>
+	</build>
+</project>
